@@ -6,6 +6,7 @@ import (
 	"io"
 	"net/http"
 	"os"
+	"strconv"
 	"time"
 )
 
@@ -61,10 +62,11 @@ func getProblem(day int, sessionCookie http.Cookie) {
 
 func main() {
 	sessionCookie := http.Cookie{Name: "session", Value: os.Getenv("AOC_SESSION_TOKEN")}
-	day := 1
+	day, err := strconv.Atoi(os.Args[1])
+	check(err)
 	fmt.Printf("Making requests for day: %d\n", day)
 	newpath := fmt.Sprintf("./day%02d", day)
-	err := os.MkdirAll(newpath, os.ModePerm)
+	err = os.MkdirAll(newpath, os.ModePerm)
 	check(err)
 	getInput(day, sessionCookie)
 	getProblem(day, sessionCookie)
